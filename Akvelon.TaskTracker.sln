@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akvelon.TaskTracker.PL", "Akvelon.TaskTracker.PL\Akvelon.TaskTracker.PL.csproj", "{18AF478C-5726-44D0-A50F-5BC416327292}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akvelon.TaskTracker.BLL", "Akvelon.TaskTracker.BLL\Akvelon.TaskTracker.BLL.csproj", "{188C03C0-5683-41B2-BDB1-8D2B3B957C8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akvelon.TaskTracker.DAL", "Akvelon.TaskTracker.DAL\Akvelon.TaskTracker.DAL.csproj", "{95E65F2C-B325-40C6-B657-FDE2AE44C6E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18AF478C-5726-44D0-A50F-5BC416327292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18AF478C-5726-44D0-A50F-5BC416327292}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18AF478C-5726-44D0-A50F-5BC416327292}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18AF478C-5726-44D0-A50F-5BC416327292}.Release|Any CPU.Build.0 = Release|Any CPU
+		{188C03C0-5683-41B2-BDB1-8D2B3B957C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{188C03C0-5683-41B2-BDB1-8D2B3B957C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{188C03C0-5683-41B2-BDB1-8D2B3B957C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{188C03C0-5683-41B2-BDB1-8D2B3B957C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95E65F2C-B325-40C6-B657-FDE2AE44C6E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95E65F2C-B325-40C6-B657-FDE2AE44C6E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95E65F2C-B325-40C6-B657-FDE2AE44C6E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95E65F2C-B325-40C6-B657-FDE2AE44C6E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
