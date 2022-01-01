@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Akvelon.TaskTracker.DAL.DataContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,6 +33,8 @@ namespace Akvelon.TaskTracker.PL
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Akvelon.TaskTracker.PL", Version = "v1"});
             });
+
+            services.AddDbContext<TaskTrackerDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
