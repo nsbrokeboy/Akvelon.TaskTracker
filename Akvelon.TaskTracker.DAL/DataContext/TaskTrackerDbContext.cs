@@ -9,7 +9,11 @@ namespace Akvelon.TaskTracker.DAL.DataContext
         {
         }
 
-        public DbSet<Task> Tasks { get; set; }
+        public TaskTrackerDbContext()
+        {
+        }
+
+        public DbSet<ProjectTask> Tasks { get; set; }
         public DbSet<Project> Projects { get; set; }
     }
 }

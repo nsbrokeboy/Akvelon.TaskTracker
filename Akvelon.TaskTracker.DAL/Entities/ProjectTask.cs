@@ -5,7 +5,7 @@ namespace Akvelon.TaskTracker.DAL.Entities
     /// <summary>
     /// This class defines the entity of Task
     /// </summary>
-    public class Task
+    public class ProjectTask
     {
         public int Id { get; set; }
 
@@ -13,7 +13,7 @@ namespace Akvelon.TaskTracker.DAL.Entities
 
         public string Description { get; set; }
 
-        public TaskStatus TaskStatus { get; set; }
+        public ProjectTaskStatus ProjectTaskStatus { get; set; }
 
         public int Priority { get; set; }
     }
