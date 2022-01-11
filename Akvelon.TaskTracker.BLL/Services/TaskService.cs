@@ -41,7 +41,7 @@ namespace Akvelon.TaskTracker.BLL.Services
             var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
             if (task == null)
             {
-                throw new NotFoundException($"Task with {id} not found.");
+                throw new NotFoundException($"Task with id = {id} not found.");
             }
 
             return task;
@@ -61,14 +61,10 @@ namespace Akvelon.TaskTracker.BLL.Services
         public async Task UpdateTask(int taskId, string name, string description, int priority, ProjectTaskStatus status, 
             CancellationToken cancellationToken)
         {
-            var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == taskId, cancellationToken);
-            if (task == null)
-            {
-                throw new NotFoundException($"Task with {taskId} not found.");
-            }
+            var task = await GetTaskById(taskId, cancellationToken);
 
-            task.Name = name;
-            task.Description = description;
+            task.Name = name ?? task.Name;
+            task.Description = description ?? task.Description;
             task.ProjectTaskStatus = status;
             task.Priority = priority;
 
@@ -77,11 +73,7 @@ namespace Akvelon.TaskTracker.BLL.Services
 
         public async Task DeleteTask(int id, CancellationToken cancellationToken)
         {
-            var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
-            if (task == null)
-            {
-                throw new NotFoundException($"Task with {id} not found.");
-            }
+            var task = await GetTaskById(id, cancellationToken);
 
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync(cancellationToken);
