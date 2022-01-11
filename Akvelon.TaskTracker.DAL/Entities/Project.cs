@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Akvelon.TaskTracker.BLL.Enums;
+using Akvelon.TaskTracker.DAL.Enums;
 
-namespace Akvelon.TaskTracker.BLL.Models
+namespace Akvelon.TaskTracker.DAL.Entities
 {
+    /// <summary>
+    /// This class defines the entity of Project
+    /// </summary>
     public class Project
     {
         public int Id { get; set; }
@@ -16,7 +19,7 @@ namespace Akvelon.TaskTracker.BLL.Models
         
         public ProjectStatus Status { get; set; }
         
-        public IEnumerable<Task> Tasks { get; set; }
+        public IEnumerable<ProjectTask> Tasks { get; set; }
 
         public int Priority { get; set; }
     }
