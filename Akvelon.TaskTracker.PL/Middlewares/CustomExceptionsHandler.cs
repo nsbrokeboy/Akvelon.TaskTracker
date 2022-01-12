@@ -40,6 +40,11 @@ namespace Akvelon.TaskTracker.PL.Middlewares
                     result = JsonSerializer.Serialize(notFoundException.Message);
                     break;
                 
+                case InvalidDateException invalidDateException:
+                    code = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(invalidDateException.Message);
+                    break;
+                
                 case Exception exc:
                     result = string.IsNullOrWhiteSpace(exc.Message) ? "Internal error" : exc.Message;
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

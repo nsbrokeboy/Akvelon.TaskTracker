@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Akvelon.TaskTracker.BLL.Services;
 using Akvelon.TaskTracker.BLL.Services.Implementations;
 using Akvelon.TaskTracker.DAL.Entities;
 using Akvelon.TaskTracker.DAL.Enums;
@@ -11,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Akvelon.TaskTracker.PL.Controllers
 {
+    /// <summary>
+    /// Controller with methods for projects
+    /// </summary>
     public class ProjectController : ControllerBase
     {
         private readonly ProjectService _serviceProject;
@@ -25,14 +27,16 @@ namespace Akvelon.TaskTracker.PL.Controllers
         
         // CRUD methods
         [HttpPost("project")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<int> CreateProject(string name, DateTime startDate, DateTime endDate,
             int priority, ProjectStatus status, CancellationToken cancellationToken)
         {
             return await _serviceProject.CreateProject(name, startDate, endDate, cancellationToken, status, priority);
         }
 
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("project")]
         public async Task<Project> GetProjectById(int id, CancellationToken cancellationToken)
         {
@@ -47,8 +51,9 @@ namespace Akvelon.TaskTracker.PL.Controllers
             return await _serviceProject.GetAllProjects(cancellationToken);
         }
 
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut("project")]
         public async Task UpdateProject(int projectId, string name, DateTime startDate, DateTime endDate,
             ProjectStatus status, int priority, CancellationToken cancellationToken)
