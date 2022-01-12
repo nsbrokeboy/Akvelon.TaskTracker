@@ -1,7 +1,7 @@
 namespace Akvelon.TaskTracker.DAL.Enums
 {
     /// <summary>
-    /// This enum is used for define the task's entity 
+    /// This enum is used for define the status of task's entity 
     /// </summary>
     public enum ProjectTaskStatus
     {

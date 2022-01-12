@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Reflection;
 using Akvelon.TaskTracker.BLL.Services;
 using Akvelon.TaskTracker.BLL.Services.Implementations;
 using Akvelon.TaskTracker.DAL.DataContext;
@@ -30,12 +33,21 @@ namespace Akvelon.TaskTracker.PL
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Akvelon.TaskTracker.PL", Version = "v1"});
             });
 
+            // Adding database context
             services.AddDbContext<TaskTrackerDbContext>(options => 
                 options.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
             
             services.AddTransient<TaskService>();
             services.AddTransient<ProjectService>();
             services.AddTransient<SortingAndFilteringService>();
+            
+            // Swagger documentation support
+            services.AddSwaggerGen(config =>
+            {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                config.IncludeXmlComments(xmlPath);
+            } );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

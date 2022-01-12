@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Akvelon.TaskTracker.PL.Middlewares
 {
+    /// <summary>
+    /// Middleware for custom exceptions handling
+    /// </summary>
     public class CustomExceptionsHandler
     {
         private readonly RequestDelegate _next;
@@ -45,6 +48,7 @@ namespace Akvelon.TaskTracker.PL.Middlewares
                     result = JsonSerializer.Serialize(invalidDateException.Message);
                     break;
                 
+                // For others exceptions
                 case Exception exc:
                     result = string.IsNullOrWhiteSpace(exc.Message) ? "Internal error" : exc.Message;
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
