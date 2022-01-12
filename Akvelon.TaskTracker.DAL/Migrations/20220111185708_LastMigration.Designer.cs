@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Akvelon.TaskTracker.DAL.Migrations
 {
     [DbContext(typeof(TaskTrackerDbContext))]
-    [Migration("20220110225559_MyMigration")]
-    partial class MyMigration
+    [Migration("20220111185708_LastMigration")]
+    partial class LastMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,7 +64,7 @@ namespace Akvelon.TaskTracker.DAL.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ProjectId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
                     b.Property<int>("ProjectTaskStatus")
@@ -79,9 +79,13 @@ namespace Akvelon.TaskTracker.DAL.Migrations
 
             modelBuilder.Entity("Akvelon.TaskTracker.DAL.Entities.ProjectTask", b =>
                 {
-                    b.HasOne("Akvelon.TaskTracker.DAL.Entities.Project", null)
+                    b.HasOne("Akvelon.TaskTracker.DAL.Entities.Project", "Project")
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Akvelon.TaskTracker.DAL.Entities.Project", b =>

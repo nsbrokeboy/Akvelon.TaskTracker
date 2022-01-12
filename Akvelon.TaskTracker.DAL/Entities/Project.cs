@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Akvelon.TaskTracker.DAL.Enums;
 
 namespace Akvelon.TaskTracker.DAL.Entities
@@ -9,6 +11,11 @@ namespace Akvelon.TaskTracker.DAL.Entities
     /// </summary>
     public class Project
     {
+        public Project()
+        {
+            Tasks = new List<ProjectTask>();
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -19,7 +26,7 @@ namespace Akvelon.TaskTracker.DAL.Entities
         
         public ProjectStatus Status { get; set; }
         
-        public IEnumerable<ProjectTask> Tasks { get; set; }
+        public IList<ProjectTask> Tasks { get; set; }
 
         public int Priority { get; set; }
     }

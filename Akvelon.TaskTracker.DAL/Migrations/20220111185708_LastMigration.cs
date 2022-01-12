@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Akvelon.TaskTracker.DAL.Migrations
 {
-    public partial class MyMigration : Migration
+    public partial class LastMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,7 +35,7 @@ namespace Akvelon.TaskTracker.DAL.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     ProjectTaskStatus = table.Column<int>(type: "integer", nullable: false),
                     Priority = table.Column<int>(type: "integer", nullable: false),
-                    ProjectId = table.Column<int>(type: "integer", nullable: true)
+                    ProjectId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,7 +45,7 @@ namespace Akvelon.TaskTracker.DAL.Migrations
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

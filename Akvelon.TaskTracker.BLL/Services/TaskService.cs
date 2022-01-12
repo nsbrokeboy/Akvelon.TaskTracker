@@ -19,16 +19,25 @@ namespace Akvelon.TaskTracker.BLL.Services
             _context = context;
         }
 
-        public async Task<int> CreateTask(string name, string description, int priority,
+        public async Task<int> CreateTask(string name, string description, int priority, int projectId,
             CancellationToken cancellationToken, ProjectTaskStatus status = ProjectTaskStatus.ToDo)
         {
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId, cancellationToken);
+            if (project == null)
+            {
+                throw new NotFoundException($"There are no project with id = {projectId}");
+            }
+            
             var task = new ProjectTask()
             {
                 Name = name,
                 Description = description,
                 Priority = priority,
-                ProjectTaskStatus = status
+                ProjectTaskStatus = status,
+                ProjectId = projectId,
             };
+
+            project.Tasks.Add(task);
 
             await _context.Tasks.AddAsync(task, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
@@ -41,7 +50,7 @@ namespace Akvelon.TaskTracker.BLL.Services
             var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
             if (task == null)
             {
-                throw new NotFoundException($"Task with {id} not found.");
+                throw new NotFoundException($"Task with id = {id} not found.");
             }
 
             return task;
@@ -58,30 +67,42 @@ namespace Akvelon.TaskTracker.BLL.Services
             return tasks;
         }
 
-        public async Task UpdateTask(int taskId, string name, string description, int priority, ProjectTaskStatus status, 
-            CancellationToken cancellationToken)
+        public async Task<IList<ProjectTask>> GetTasksByProject(int projectId, CancellationToken cancellationToken)
         {
-            var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == taskId, cancellationToken);
-            if (task == null)
+            // If we use eager loading it returns cycle of project and tasks. I decided not to use eager loading for this method.
+            var tasks = await _context.Tasks
+                .Where(t => t.ProjectId == projectId)
+                .ToListAsync(cancellationToken);
+
+            if (!tasks.Any())
             {
-                throw new NotFoundException($"Task with {taskId} not found.");
+                throw new NotFoundException("There are no tasks found");
             }
 
-            task.Name = name;
-            task.Description = description;
+            return tasks;
+        }
+
+        public async Task UpdateTask(int taskId, string name, string description, int priority, int projectId,
+            ProjectTaskStatus status, CancellationToken cancellationToken)
+        {
+            var task = await GetTaskById(taskId, cancellationToken);
+
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId, cancellationToken);
+            
+            task.Name = name ?? task.Name;
+            task.Description = description ?? task.Description;
             task.ProjectTaskStatus = status;
             task.Priority = priority;
-
+            if (project != null)
+            {
+                task.ProjectId = project.Id;
+            }
             await _context.SaveChangesAsync(cancellationToken);
         }
 
         public async Task DeleteTask(int id, CancellationToken cancellationToken)
         {
-            var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
-            if (task == null)
-            {
-                throw new NotFoundException($"Task with {id} not found.");
-            }
+            var task = await GetTaskById(id, cancellationToken);
 
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync(cancellationToken);

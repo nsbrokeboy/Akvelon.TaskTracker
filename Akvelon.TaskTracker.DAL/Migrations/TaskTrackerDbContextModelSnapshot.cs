@@ -62,7 +62,7 @@ namespace Akvelon.TaskTracker.DAL.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ProjectId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
                     b.Property<int>("ProjectTaskStatus")
@@ -77,9 +77,13 @@ namespace Akvelon.TaskTracker.DAL.Migrations
 
             modelBuilder.Entity("Akvelon.TaskTracker.DAL.Entities.ProjectTask", b =>
                 {
-                    b.HasOne("Akvelon.TaskTracker.DAL.Entities.Project", null)
+                    b.HasOne("Akvelon.TaskTracker.DAL.Entities.Project", "Project")
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Akvelon.TaskTracker.DAL.Entities.Project", b =>
