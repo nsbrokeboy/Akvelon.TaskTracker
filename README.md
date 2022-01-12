@@ -25,7 +25,7 @@ Example:
     "ConnectionString": "yourConnectionString"
   }
 ```
-2. Secondly, run using _dotnet-cli_ in project directory:
+2. Secondly, run with _dotnet-cli_ in project directory:
 ```
 dotnet ef database update -s ../Akvelon.TaskTracker.PL/ -p ../Akvelon.TaskTracker.DAL/
 ```
