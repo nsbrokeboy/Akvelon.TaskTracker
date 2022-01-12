@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,9 +28,9 @@ namespace Akvelon.TaskTracker.BLL.Services.Implementations
         {
             if (startDate > endDate)
             {
-                throw new InvalidDataException("Start date can't be after the end date.");
+                throw new InvalidDateException("Start date can't be after the end date.");
             }
-            
+
             var project = new Project
             {
                 Name = name,
@@ -75,9 +74,9 @@ namespace Akvelon.TaskTracker.BLL.Services.Implementations
         {
             if (startDate > endDate)
             {
-                throw new InvalidDataException("Start date can't be after the end date.");
+                throw new InvalidDateException("Start date can't be after the end date.");
             }
-            
+
             var project = await GetProjectById(projectId, cancellationToken);
 
             project.Name = name ?? project.Name;
