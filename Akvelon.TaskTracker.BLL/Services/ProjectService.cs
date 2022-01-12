@@ -54,7 +54,7 @@ namespace Akvelon.TaskTracker.BLL.Services
 
         public async Task<IList<Project>> GetAllProjects(CancellationToken cancellationToken)
         {
-            var projects = await _context.Projects.ToListAsync(cancellationToken);
+            var projects = await _context.Projects.Include(p => p.Tasks).ToListAsync(cancellationToken);
             if (!projects.Any())
             {
                 throw new NotFoundException("There are no projects found");
@@ -64,7 +64,7 @@ namespace Akvelon.TaskTracker.BLL.Services
         }
 
         public async Task UpdateProject(int projectId, string name, DateTime startDate, DateTime endDate,
-            ProjectStatus status, IList<ProjectTask> tasks, int priority, CancellationToken cancellationToken)
+            ProjectStatus status, int priority, CancellationToken cancellationToken)
         {
             var project = await GetProjectById(projectId, cancellationToken);
 
@@ -82,33 +82,6 @@ namespace Akvelon.TaskTracker.BLL.Services
             var project = await GetProjectById(id, cancellationToken);
 
             _context.Projects.Remove(project);
-            await _context.SaveChangesAsync(cancellationToken);
-        }
-
-        // TODO: need to delete this if task must be assigned for project
-        public async Task AddTaskInProject(int projectId, int taskId, CancellationToken cancellationToken)
-        {
-            var project = await GetProjectById(projectId, cancellationToken);
-            var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == taskId, cancellationToken);
-            if (task == null)
-            {
-                throw new NotFoundException($"Task with id = {taskId} not found.");
-            }
-
-            project.Tasks.Add(task);
-            await _context.SaveChangesAsync(cancellationToken);
-        }
-
-        public async Task DeleteTaskFromProject(int projectId, int taskId, CancellationToken cancellationToken)
-        {
-            var project = await GetProjectById(projectId, cancellationToken);
-            var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == taskId, cancellationToken);
-            if (task == null)
-            {
-                throw new NotFoundException($"Task with id = {taskId} not found.");
-            }
-
-            project.Tasks.Remove(task);
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

@@ -47,9 +47,9 @@ namespace Akvelon.TaskTracker.PL.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPut("project")]
         public async Task UpdateProject(int projectId, string name, DateTime startDate, DateTime endDate,
-            ProjectStatus status, IList<ProjectTask> tasks, int priority, CancellationToken cancellationToken)
+            ProjectStatus status, int priority, CancellationToken cancellationToken)
         {
-            await _serviceProject.UpdateProject(projectId, name, startDate, endDate, status, tasks, priority,
+            await _serviceProject.UpdateProject(projectId, name, startDate, endDate, status, priority,
                 cancellationToken);
         }
 
