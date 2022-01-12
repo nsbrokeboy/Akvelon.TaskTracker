@@ -21,17 +21,17 @@ namespace Akvelon.TaskTracker.BLL.Services
         }
 
         public async Task<int> CreateProject(string name, DateTime startDate, DateTime endDate,
-            IList<ProjectTask> tasks, int priority, CancellationToken cancellationToken,
-            ProjectStatus status = ProjectStatus.NotStarted)
+            CancellationToken cancellationToken,
+            ProjectStatus status = ProjectStatus.NotStarted,
+            int priority = 1)
         {
-            var project = new Project()
+            var project = new Project
             {
                 Name = name,
                 StartDate = startDate,
                 EndDate = endDate,
-                Tasks = tasks ?? new List<ProjectTask>(),
                 Priority = priority,
-                Status = status,
+                Status = status
             };
 
             await _context.Projects.AddAsync(project, cancellationToken);
@@ -42,7 +42,8 @@ namespace Akvelon.TaskTracker.BLL.Services
 
         public async Task<Project> GetProjectById(int id, CancellationToken cancellationToken)
         {
-            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+            var project = await _context.Projects.Include(p => p.Tasks).
+                FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
             if (project == null)
             {
                 throw new NotFoundException($"Project with id = {id} not found.");
@@ -58,21 +59,8 @@ namespace Akvelon.TaskTracker.BLL.Services
             {
                 throw new NotFoundException("There are no projects found");
             }
-
+            
             return projects;
-        }
-
-        public async Task<IList<ProjectTask>> GetAllTasksByProject(int projectId, CancellationToken cancellationToken)
-        {
-            var project = await GetProjectById(projectId, cancellationToken);
-            var tasks = project.Tasks.ToList();
-
-            if (!tasks.Any())
-            {
-                throw new NotFoundException("There are no tasks in project found");
-            }
-
-            return tasks;
         }
 
         public async Task UpdateProject(int projectId, string name, DateTime startDate, DateTime endDate,
@@ -85,7 +73,6 @@ namespace Akvelon.TaskTracker.BLL.Services
             project.EndDate = endDate;
             project.Priority = priority;
             project.Status = status;
-            project.Tasks = tasks ?? project.Tasks;
 
             await _context.SaveChangesAsync(cancellationToken);
         }
@@ -98,7 +85,7 @@ namespace Akvelon.TaskTracker.BLL.Services
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        // need to delete this if task must be assigned for project
+        // TODO: need to delete this if task must be assigned for project
         public async Task AddTaskInProject(int projectId, int taskId, CancellationToken cancellationToken)
         {
             var project = await GetProjectById(projectId, cancellationToken);
@@ -111,7 +98,7 @@ namespace Akvelon.TaskTracker.BLL.Services
             project.Tasks.Add(task);
             await _context.SaveChangesAsync(cancellationToken);
         }
-        
+
         public async Task DeleteTaskFromProject(int projectId, int taskId, CancellationToken cancellationToken)
         {
             var project = await GetProjectById(projectId, cancellationToken);
@@ -122,7 +109,6 @@ namespace Akvelon.TaskTracker.BLL.Services
             }
 
             project.Tasks.Remove(task);
-            // place delete from Task table
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

@@ -16,5 +16,9 @@ namespace Akvelon.TaskTracker.DAL.Entities
         public ProjectTaskStatus ProjectTaskStatus { get; set; }
 
         public int Priority { get; set; }
+
+        public int ProjectId { get; set; }
+        
+        public Project Project { get; set; }
     }
 }

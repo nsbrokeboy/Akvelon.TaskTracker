@@ -19,16 +19,25 @@ namespace Akvelon.TaskTracker.BLL.Services
             _context = context;
         }
 
-        public async Task<int> CreateTask(string name, string description, int priority,
+        public async Task<int> CreateTask(string name, string description, int priority, int projectId,
             CancellationToken cancellationToken, ProjectTaskStatus status = ProjectTaskStatus.ToDo)
         {
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId, cancellationToken);
+            if (project == null)
+            {
+                throw new NotFoundException($"There are no project with id = {projectId}");
+            }
+            
             var task = new ProjectTask()
             {
                 Name = name,
                 Description = description,
                 Priority = priority,
-                ProjectTaskStatus = status
+                ProjectTaskStatus = status,
+                ProjectId = projectId,
             };
+
+            project.Tasks.Add(task);
 
             await _context.Tasks.AddAsync(task, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
@@ -58,16 +67,36 @@ namespace Akvelon.TaskTracker.BLL.Services
             return tasks;
         }
 
-        public async Task UpdateTask(int taskId, string name, string description, int priority, ProjectTaskStatus status, 
-            CancellationToken cancellationToken)
+        public async Task<IList<ProjectTask>> GetTasksByProject(int projectId, CancellationToken cancellationToken)
+        {
+            // If we use eager loading it returns cycle of project and tasks. I decided not to use eager loading for this method.
+            var tasks = await _context.Tasks
+                .Where(t => t.ProjectId == projectId)
+                .ToListAsync(cancellationToken);
+
+            if (!tasks.Any())
+            {
+                throw new NotFoundException("There are no tasks found");
+            }
+
+            return tasks;
+        }
+
+        public async Task UpdateTask(int taskId, string name, string description, int priority, int projectId,
+            ProjectTaskStatus status, CancellationToken cancellationToken)
         {
             var task = await GetTaskById(taskId, cancellationToken);
 
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId, cancellationToken);
+            
             task.Name = name ?? task.Name;
             task.Description = description ?? task.Description;
             task.ProjectTaskStatus = status;
             task.Priority = priority;
-
+            if (project != null)
+            {
+                task.ProjectId = project.Id;
+            }
             await _context.SaveChangesAsync(cancellationToken);
         }
 

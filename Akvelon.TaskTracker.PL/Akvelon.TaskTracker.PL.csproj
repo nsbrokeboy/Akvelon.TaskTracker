@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.13" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.13" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.13">
           <PrivateAssets>all</PrivateAssets>
@@ -16,6 +17,14 @@
     <ItemGroup>
       <ProjectReference Include="..\Akvelon.TaskTracker.BLL\Akvelon.TaskTracker.BLL.csproj" />
       <ProjectReference Include="..\Akvelon.TaskTracker.DAL\Akvelon.TaskTracker.DAL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\swagger-ui\SwaggerDark.css" />
     </ItemGroup>
 
 </Project>

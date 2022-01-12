@@ -11,6 +11,11 @@ namespace Akvelon.TaskTracker.DAL.Entities
     /// </summary>
     public class Project
     {
+        public Project()
+        {
+            Tasks = new List<ProjectTask>();
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }
