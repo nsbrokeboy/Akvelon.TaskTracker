@@ -7,7 +7,7 @@ using Akvelon.TaskTracker.DAL.Enums;
 
 namespace Akvelon.TaskTracker.BLL.Services.Implementations
 {
-    public class SortingAndFilterService : ISortingProjectService, IFilterProjectService
+    public class SortingAndFilteringService : ISortingProjectService, IFilteringProjectService
     {
         public IList<Project> SortByStartDateDescending(IList<Project> projects)
         {
@@ -29,22 +29,22 @@ namespace Akvelon.TaskTracker.BLL.Services.Implementations
             return projects.OrderBy(p => (int) p.Status).ToList();
         }
 
-        public IList<Project> FilterByStartDateAfter(IList<Project> projects, DateTime dateAfter)
+        public IList<Project> FilteringByStartDateAfter(IList<Project> projects, DateTime dateAfter)
         {
             return projects.Where(p => p.StartDate > dateAfter).ToList();
         }
 
-        public IList<Project> FilterByEndDateBefore(IList<Project> projects, DateTime dateBefore)
+        public IList<Project> FilteringByEndDateBefore(IList<Project> projects, DateTime dateBefore)
         {
             return projects.Where(p => p.EndDate < dateBefore).ToList();
         }
 
-        public IList<Project> FilterCountOfTasksInRange(IList<Project> projects, int start, int end)
+        public IList<Project> FilteringCountOfTasksInRange(IList<Project> projects, int start, int end)
         {
             return projects.Where(p => p.Tasks.Count >= start && p.Tasks.Count <= end).ToList();
         }
 
-        public IList<Project> FilterByProjectStatus(IList<Project> projects, ProjectStatus status)
+        public IList<Project> FilteringByProjectStatus(IList<Project> projects, ProjectStatus status)
         {
             return projects.Where(p => p.Status == status).ToList();
         }

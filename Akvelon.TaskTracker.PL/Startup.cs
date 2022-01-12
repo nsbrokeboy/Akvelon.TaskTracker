@@ -35,6 +35,7 @@ namespace Akvelon.TaskTracker.PL
             
             services.AddTransient<TaskService>();
             services.AddTransient<ProjectService>();
+            services.AddTransient<SortingAndFilteringService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
