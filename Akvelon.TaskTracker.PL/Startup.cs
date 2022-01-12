@@ -1,4 +1,5 @@
 using Akvelon.TaskTracker.BLL.Services;
+using Akvelon.TaskTracker.BLL.Services.Implementations;
 using Akvelon.TaskTracker.DAL.DataContext;
 using Akvelon.TaskTracker.PL.Middlewares;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,7 @@ namespace Akvelon.TaskTracker.PL
             
             services.AddTransient<TaskService>();
             services.AddTransient<ProjectService>();
+            services.AddTransient<SortingAndFilteringService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

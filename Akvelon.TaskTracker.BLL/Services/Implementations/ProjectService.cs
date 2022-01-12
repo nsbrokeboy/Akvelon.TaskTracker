@@ -4,14 +4,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Akvelon.TaskTracker.BLL.Exceptions;
+using Akvelon.TaskTracker.BLL.Services.Interfaces;
 using Akvelon.TaskTracker.DAL.DataContext;
 using Akvelon.TaskTracker.DAL.Entities;
 using Akvelon.TaskTracker.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace Akvelon.TaskTracker.BLL.Services
+namespace Akvelon.TaskTracker.BLL.Services.Implementations
 {
-    public class ProjectService
+    public class ProjectService : IProjectService
     {
         private readonly TaskTrackerDbContext _context;
 
@@ -42,8 +43,8 @@ namespace Akvelon.TaskTracker.BLL.Services
 
         public async Task<Project> GetProjectById(int id, CancellationToken cancellationToken)
         {
-            var project = await _context.Projects.Include(p => p.Tasks).
-                FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+            var project = await _context.Projects.Include(p => p.Tasks)
+                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
             if (project == null)
             {
                 throw new NotFoundException($"Project with id = {id} not found.");
@@ -59,7 +60,7 @@ namespace Akvelon.TaskTracker.BLL.Services
             {
                 throw new NotFoundException("There are no projects found");
             }
-            
+
             return projects;
         }
 
