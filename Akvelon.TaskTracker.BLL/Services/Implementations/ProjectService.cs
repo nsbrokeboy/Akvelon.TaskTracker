@@ -29,7 +29,7 @@ namespace Akvelon.TaskTracker.BLL.Services.Implementations
         {
             if (startDate > endDate)
             {
-                throw new InvalidDataException("Start date can't be after the end date.");
+                throw new InvalidDateException("Start date can't be after the end date.");
             }
             
             var project = new Project
@@ -75,7 +75,7 @@ namespace Akvelon.TaskTracker.BLL.Services.Implementations
         {
             if (startDate > endDate)
             {
-                throw new InvalidDataException("Start date can't be after the end date.");
+                throw new InvalidDateException("Start date can't be after the end date.");
             }
             
             var project = await GetProjectById(projectId, cancellationToken);
